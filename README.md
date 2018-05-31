@@ -23,12 +23,11 @@ var makeUploader = function(fileList){
     blockSize: 1024**2,
     concurrency: 3,
     retries: 5,
-    uploadCb: function(data){
+    request: new qx.io.request.XHr("/REST/upload",'POST'),
+    uploadCb: function(req,data){ // default upload cb
       // data: { blob: xxx, name: xxx, start: xxx, end: xxx}
       var promise = new qx.Promise(function(resolve,reject){
-          var req = new qx.io.request.XHr("/REST/upload",'POST').set({
-            requestData: data
-          });
+          req.setRequestData(data);
           req.addListener('success',function(e){
             resolve(e.getData())
           });
